@@ -9,10 +9,10 @@ spec:
         branch: main
       dockerfile_path: docker/web/Dockerfile
       http_port: 80
-      instance_size_slug: professional-xs
+      instance_size_slug: apps-d-1vcpu-0.5gb
       autoscaling:
-        min_instance_count: 2
-        max_instance_count: 4
+        min_instance_count: 1
+        max_instance_count: 2
         metrics:
           cpu:
             percent: 70
@@ -74,7 +74,7 @@ spec:
         repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/queue-worker/Dockerfile
-      instance_size_slug: professional-xs
+      instance_size_slug: apps-d-1vcpu-0.5gb
       autoscaling:
         min_instance_count: 1
         max_instance_count: 2
