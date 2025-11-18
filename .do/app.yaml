@@ -140,10 +140,7 @@ spec:
         - key: LOG_CHANNEL
           value: "stderr"
 
-  jobs:
     - name: scheduler
-      kind: SCHEDULED
-      schedule: "*/1 * * * *"  # Every minute
       github:
         repo: AppPlatform-Templates/laravel-appplatform
         branch: main

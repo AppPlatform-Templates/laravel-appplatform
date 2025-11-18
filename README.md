@@ -26,7 +26,7 @@ Production-ready Laravel template for DigitalOcean App Platform with auto-scalin
 │                                                               │
 │  ┌─────────────┐      ┌──────────────┐   ┌──────────────┐  │
 │  │ Web Service │      │Queue Worker  │   │  Scheduler   │  │
-│  │(Nginx+PHP)  │      │(Background)  │   │ (Cron Jobs)  │  │
+│  │(Nginx+PHP)  │      │(Background)  │   │  (Worker)    │  │
 │  │Auto: 2-10   │      │Auto: 1-5     │   │  Fixed: 1    │  │
 │  └──────┬──────┘      └──────┬───────┘   └──────┬───────┘  │
 │         │                    │                   │           │
@@ -43,7 +43,47 @@ Production-ready Laravel template for DigitalOcean App Platform with auto-scalin
 └───────────────────────────────────────────────────────────────┘
 ```
 
-## Quick Deploy
+## Deployment Modes
+
+This template offers two deployment configurations:
+
+### Production Mode (Default) - $152-440/month
+
+**Best for**: Production workloads, high-traffic applications, SaaS platforms
+
+- ✅ Auto-scaling web service (2-10 instances)
+- ✅ Auto-scaling queue worker (1-5 instances)
+- ✅ Scheduler worker
+- ✅ Managed PostgreSQL (production)
+- ✅ Managed Redis
+
+**Deploy**: Click the button above or see [Manual Deployment](#manual-deployment)
+
+### Starter Mode - $17-22/month
+
+**Best for**: Development, testing, small applications, learning
+
+- ✅ Single web instance
+- ✅ Optional scheduler
+- ✅ Dev Database (PostgreSQL)
+- ❌ No Redis (uses database for cache)
+- ❌ No queue worker (sync jobs)
+
+**Deploy**: See [.do/examples/README.md](.do/examples/README.md)
+
+| Feature | Starter | Production |
+|---------|---------|------------|
+| Web instances | 1 | 2-10 (auto-scale) |
+| Queue worker | No (sync) | Yes (1-5 auto-scale) |
+| Database | Dev (1GB) | Managed (scalable) |
+| Redis | No | Yes |
+| Cost/month | $17-22 | $152-440 |
+
+[**Compare all features →**](.do/examples/README.md)
+
+---
+
+## Quick Deploy (Production Mode)
 
 Click the Deploy to DigitalOcean button above to deploy this Laravel application in minutes.
 
@@ -51,7 +91,7 @@ Click the Deploy to DigitalOcean button above to deploy this Laravel application
 
 - **Web Service**: 2-10 instances (auto-scaling), serves HTTP traffic
 - **Queue Worker**: 1-5 instances (auto-scaling), processes background jobs
-- **Scheduler**: 1 instance, runs Laravel scheduled tasks every minute
+- **Scheduler**: 1 instance (Worker), runs Laravel scheduled tasks every minute
 - **PostgreSQL Database**: Managed database for application data
 - **Redis**: Managed cache and queue backend
 
@@ -237,9 +277,12 @@ composer install
 ### Scheduler
 
 - **Technology**: PHP CLI running `php artisan schedule:run`
-- **Schedule**: Every minute (`*/1 * * * *`)
+- **Component Type**: Worker (continuous loop, not SCHEDULED job)
+- **Frequency**: Every 60 seconds
 - **Instance Size**: `basic-xxs` ($5/month)
 - **Purpose**: Runs Laravel's task scheduler
+
+> **Note**: The scheduler runs as a **Worker** (not a SCHEDULED job) because Laravel's scheduler needs to run every minute, but App Platform's scheduled jobs have a minimum interval of 15 minutes. The Worker runs a continuous loop that executes `schedule:run` every 60 seconds.
 
 ## Estimated Costs
 
@@ -331,7 +374,10 @@ Monitor in the App Platform dashboard:
 
 ## Additional Resources
 
+- **[Getting Started Guide](./GETTING_STARTED.md)** - Step-by-step tutorial to build and deploy a Laravel app
 - [Deployment Guide](./DEPLOYMENT_GUIDE.md) - Comprehensive deployment documentation
+- [Alternative Configurations](./.do/examples/README.md) - Starter mode and other options
+- [Template Usage](./TEMPLATE_USAGE.md) - How to use this template
 - [Version Info](./VERSION.md) - Laravel version and update policy
 - [Laravel Documentation](https://laravel.com/docs)
 - [App Platform Documentation](https://docs.digitalocean.com/products/app-platform/)

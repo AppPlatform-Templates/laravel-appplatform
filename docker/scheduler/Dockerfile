@@ -71,6 +71,8 @@ RUN php artisan config:cache || true
 # Switch to non-root user
 USER www-data
 
-# Run scheduler
-# App Platform will execute this every minute based on the schedule configuration
-CMD ["php", "artisan", "schedule:run", "--verbose", "--no-interaction"]
+# Run scheduler continuously (every 60 seconds)
+# Note: We use a Worker instead of App Platform's SCHEDULED job because
+# Laravel's scheduler needs to run every minute, but App Platform's
+# scheduled jobs have a minimum interval of 15 minutes
+CMD ["sh", "-c", "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"]

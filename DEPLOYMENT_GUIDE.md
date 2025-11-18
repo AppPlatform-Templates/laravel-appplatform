@@ -17,8 +17,10 @@ Laravel applications typically consist of:
 
 **Recommended Components** (Production best practices):
 - **Queue Worker**: Background job processing (`php artisan queue:work`)
-- **Scheduler**: Cron job runner (`php artisan schedule:run`) for scheduled tasks
+- **Scheduler**: Task scheduler (`php artisan schedule:run`) - runs as Worker, not SCHEDULED job
 - **Redis**: Queue backend for asynchronous job processing
+
+> **Important Note on Scheduler**: Laravel's scheduler is designed to run every minute to check which tasks are due. However, App Platform's SCHEDULED jobs have a minimum interval of 15 minutes. Therefore, we run the scheduler as a **Worker** with a continuous loop that executes `schedule:run` every 60 seconds. This ensures Laravel's scheduling works as designed.
 
 ### Data Dependencies
 
