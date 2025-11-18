@@ -1,5 +1,9 @@
+# Starter Mode - Laravel on App Platform
+# Lower-cost configuration for development, testing, and small applications
+# Estimated cost: ~$22/month
+
 spec:
-  name: laravel-app
+  name: laravel-starter
   region: nyc3
 
   services:
@@ -9,13 +13,8 @@ spec:
         branch: main
       dockerfile_path: docker/web/Dockerfile
       http_port: 80
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      autoscaling:
-        min_instance_count: 1
-        max_instance_count: 2
-        metrics:
-          cpu:
-            percent: 70
+      instance_count: 1
+      instance_size_slug: basic-xs  # Single instance, no auto-scaling
       health_check:
         http_path: /
         initial_delay_seconds: 60
@@ -25,7 +24,7 @@ spec:
         failure_threshold: 3
       envs:
         - key: APP_NAME
-          value: "Laravel on App Platform"
+          value: "Laravel Starter"
         - key: APP_ENV
           value: "production"
         - key: APP_DEBUG
@@ -49,71 +48,22 @@ spec:
           value: "${db.PASSWORD}"
           scope: RUN_AND_BUILD_TIME
           type: SECRET
-        - key: REDIS_HOST
-          value: "${redis.HOSTNAME}"
-        - key: REDIS_PORT
-          value: "${redis.PORT}"
-        - key: REDIS_PASSWORD
-          value: "${redis.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
+        # Use database for cache and sessions (no Redis in starter mode)
         - key: CACHE_DRIVER
-          value: "redis"
+          value: "database"
         - key: SESSION_DRIVER
-          value: "redis"
+          value: "database"
+        # Use sync queue (no queue worker in starter mode)
         - key: QUEUE_CONNECTION
-          value: "redis"
+          value: "sync"
         - key: LOG_CHANNEL
           value: "stderr"
         - key: FILESYSTEM_DISK
           value: "local"
 
   workers:
-    - name: queue-worker
-      git:
-        repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
-        branch: main
-      dockerfile_path: docker/queue-worker/Dockerfile
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      autoscaling:
-        min_instance_count: 1
-        max_instance_count: 2
-        metrics:
-          cpu:
-            percent: 75
-      envs:
-        - key: APP_ENV
-          value: "production"
-        - key: APP_KEY
-          scope: RUN_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${db.PORT}"
-        - key: DB_DATABASE
-          value: "${db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${db.USERNAME}"
-        - key: DB_PASSWORD
-          scope: RUN_TIME
-          type: SECRET
-          value: "${db.PASSWORD}"
-        - key: REDIS_HOST
-          value: "${redis.HOSTNAME}"
-        - key: REDIS_PORT
-          value: "${redis.PORT}"
-        - key: REDIS_PASSWORD
-          scope: RUN_TIME
-          type: SECRET
-          value: "${redis.PASSWORD}"
-        - key: QUEUE_CONNECTION
-          value: "redis"
-        - key: LOG_CHANNEL
-          value: "stderr"
-
+    # Optional: Include scheduler worker ($5/month)
+    # Remove this section if you don't need scheduled tasks
     - name: scheduler
       git:
         repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
@@ -141,23 +91,12 @@ spec:
           scope: RUN_TIME
           type: SECRET
           value: "${db.PASSWORD}"
-        - key: REDIS_HOST
-          value: "${redis.HOSTNAME}"
-        - key: REDIS_PORT
-          value: "${redis.PORT}"
-        - key: REDIS_PASSWORD
-          scope: RUN_TIME
-          type: SECRET
-          value: "${redis.PASSWORD}"
         - key: LOG_CHANNEL
           value: "stderr"
 
   databases:
+    # Dev Database - PostgreSQL only, 1GB storage, $7/month
     - engine: PG
       name: db
-      production: true
+      production: false  # Dev database
       version: "16"
-    - engine: REDIS
-      name: redis
-      production: true
-      version: "7"
