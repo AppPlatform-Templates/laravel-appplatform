@@ -103,8 +103,9 @@ COPY docker/web/default.conf /etc/nginx/http.d/default.conf
 COPY docker/web/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Laravel optimization
-RUN php artisan config:cache || true \
-    && php artisan route:cache || true \
+# Note: config:cache is NOT run here because APP_KEY is set at runtime
+# Config will be cached on first request or manually after deployment
+RUN php artisan route:cache || true \
     && php artisan view:cache || true
 
 # Expose port 80 for Nginx

@@ -65,8 +65,7 @@ RUN mkdir -p \
 # PHP production configuration
 COPY docker/queue-worker/php.ini /usr/local/etc/php/conf.d/99-app.ini
 
-# Laravel optimization
-RUN php artisan config:cache || true
+# Note: config:cache is NOT run here because APP_KEY and DB credentials are set at runtime
 
 # Switch to non-root user
 USER www-data
