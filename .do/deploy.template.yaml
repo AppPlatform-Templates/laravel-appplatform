@@ -68,72 +68,96 @@ spec:
         - key: REDIS_SCHEME
           value: "tls"
 
-  # workers:
-  #   - name: queue-worker
-  #     git:
-  #       repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
-  #       branch: main
-  #     dockerfile_path: docker/queue-worker/Dockerfile
-  #     instance_count: 1
-  #     instance_size_slug: apps-d-1vcpu-0.5gb
-  #     envs:
-  #       - key: APP_ENV
-  #         value: "production"
-  #       - key: APP_KEY
-  #         scope: RUN_TIME
-  #         type: SECRET
-  #       - key: DB_CONNECTION
-  #         value: "pgsql"
-  #       - key: DB_HOST
-  #         value: "${db.HOSTNAME}"
-  #       - key: DB_PORT
-  #         value: "${db.PORT}"
-  #       - key: DB_DATABASE
-  #         value: "${db.DATABASE}"
-  #       - key: DB_USERNAME
-  #         value: "${db.USERNAME}"
-  #       - key: DB_PASSWORD
-  #         scope: RUN_TIME
-  #         type: SECRET
-  #         value: "${db.PASSWORD}"
-  #       - key: CACHE_DRIVER
-  #         value: "file"
-  #       - key: QUEUE_CONNECTION
-  #         value: "sync"
-  #       - key: LOG_CHANNEL
-  #         value: "stderr"
+  workers:
+    - name: queue-worker
+      git:
+        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+        branch: main
+      dockerfile_path: docker/queue-worker/Dockerfile
+      instance_count: 1
+      instance_size_slug: apps-d-1vcpu-0.5gb
+      envs:
+        - key: APP_ENV
+          value: "production"
+        - key: APP_KEY
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: DB_CONNECTION
+          value: "pgsql"
+        - key: DB_HOST
+          value: "${laravel-db.HOSTNAME}"
+        - key: DB_PORT
+          value: "${laravel-db.PORT}"
+        - key: DB_DATABASE
+          value: "${laravel-db.DATABASE}"
+        - key: DB_USERNAME
+          value: "${laravel-db.USERNAME}"
+        - key: DB_PASSWORD
+          value: "${laravel-db.PASSWORD}"
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: CACHE_DRIVER
+          value: "redis"
+        - key: QUEUE_CONNECTION
+          value: "redis"
+        - key: LOG_CHANNEL
+          value: "stderr"
+        - key: REDIS_HOST
+          value: "${laravel-valkey.HOSTNAME}"
+        - key: REDIS_PASSWORD
+          value: "${laravel-valkey.PASSWORD}"
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: REDIS_PORT
+          value: "${laravel-valkey.PORT}"
+        - key: REDIS_USERNAME
+          value: "${laravel-valkey.USERNAME}"
+        - key: REDIS_SCHEME
+          value: "tls"
 
-  #   - name: scheduler
-  #     git:
-  #       repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
-  #       branch: main
-  #     dockerfile_path: docker/scheduler/Dockerfile
-  #     instance_count: 1
-  #     instance_size_slug: apps-d-1vcpu-0.5gb
-  #     envs:
-  #       - key: APP_ENV
-  #         value: "production"
-  #       - key: APP_KEY
-  #         scope: RUN_TIME
-  #         type: SECRET
-  #       - key: DB_CONNECTION
-  #         value: "pgsql"
-  #       - key: DB_HOST
-  #         value: "${db.HOSTNAME}"
-  #       - key: DB_PORT
-  #         value: "${db.PORT}"
-  #       - key: DB_DATABASE
-  #         value: "${db.DATABASE}"
-  #       - key: DB_USERNAME
-  #         value: "${db.USERNAME}"
-  #       - key: DB_PASSWORD
-  #         scope: RUN_TIME
-  #         type: SECRET
-  #         value: "${db.PASSWORD}"
-  #       - key: CACHE_DRIVER
-  #         value: "file"
-  #       - key: LOG_CHANNEL
-  #         value: "stderr"
+    - name: scheduler
+      git:
+        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+        branch: main
+      dockerfile_path: docker/scheduler/Dockerfile
+      instance_count: 1
+      instance_size_slug: apps-d-1vcpu-0.5gb
+      envs:
+        - key: APP_ENV
+          value: "production"
+        - key: APP_KEY
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: DB_CONNECTION
+          value: "pgsql"
+        - key: DB_HOST
+          value: "${laravel-db.HOSTNAME}"
+        - key: DB_PORT
+          value: "${laravel-db.PORT}"
+        - key: DB_DATABASE
+          value: "${laravel-db.DATABASE}"
+        - key: DB_USERNAME
+          value: "${laravel-db.USERNAME}"
+        - key: DB_PASSWORD
+          value: "${laravel-db.PASSWORD}"
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: CACHE_DRIVER
+          value: "redis"
+        - key: LOG_CHANNEL
+          value: "stderr"
+        - key: REDIS_HOST
+          value: "${laravel-valkey.HOSTNAME}"
+        - key: REDIS_PASSWORD
+          value: "${laravel-valkey.PASSWORD}"
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: REDIS_PORT
+          value: "${laravel-valkey.PORT}"
+        - key: REDIS_USERNAME
+          value: "${laravel-valkey.USERNAME}"
+        - key: REDIS_SCHEME
+          value: "tls"
 
   databases:
     - engine: PG
