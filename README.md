@@ -2,7 +2,7 @@
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/venkat-do/laravel-appplatform/tree/main)
 
-Production-ready Laravel template for DigitalOcean App Platform with auto-scaling, managed databases, and queue processing.
+Production-ready Laravel template for DigitalOcean App Platform with auto-scaling, managed databases and queue processing.
 
 > **Note**: This is a **configuration template** providing Docker and App Platform setup for Laravel. You'll need to add your Laravel application files. See [TEMPLATE_USAGE.md](./TEMPLATE_USAGE.md) for instructions.
 
