@@ -41,3 +41,29 @@ Route::get('/db-test', function () {
         ], 500);
     }
 });
+
+Route::get('/redis-test', function () {
+    try {
+        $redis = Illuminate\Support\Facades\Redis::connection();
+
+        // Test basic operations
+        $redis->set('test_key', 'Hello from Valkey!');
+        $value = $redis->get('test_key');
+
+        // Get Redis info
+        $info = $redis->info();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Redis/Valkey connection successful',
+            'test_value' => $value,
+            'server_version' => $info['Server']['redis_version'] ?? 'Unknown',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Redis/Valkey connection failed',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+});

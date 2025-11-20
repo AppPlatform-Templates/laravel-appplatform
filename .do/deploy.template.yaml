@@ -46,15 +46,27 @@ spec:
           scope: RUN_AND_BUILD_TIME
           type: SECRET
         - key: CACHE_DRIVER
-          value: "file"
+          value: "redis"
         - key: SESSION_DRIVER
-          value: "file"
+          value: "redis"
         - key: QUEUE_CONNECTION
           value: "sync"
         - key: LOG_CHANNEL
           value: "stderr"
         - key: FILESYSTEM_DISK
           value: "local"
+        - key: REDIS_HOST
+          value: "${laravel-valkey.HOSTNAME}"
+        - key: REDIS_PASSWORD
+          value: "${laravel-valkey.PASSWORD}"
+          scope: RUN_AND_BUILD_TIME
+          type: SECRET
+        - key: REDIS_PORT
+          value: "${laravel-valkey.PORT}"
+        - key: REDIS_USERNAME
+          value: "${laravel-valkey.USERNAME}"
+        - key: REDIS_SCHEME
+          value: "tls"
 
   # workers:
   #   - name: queue-worker
@@ -129,8 +141,8 @@ spec:
       production: true
       cluster_name: laravel-db
       version: "16"
-    # - engine: VALKEY
-    #   name: redis
-    #   production: true
-    #   cluster_name: laravel-valkey
-    #   version: "8"
+    - engine: VALKEY
+      name: laravel-valkey
+      production: true
+      cluster_name: laravel-valkey
+      version: "8"
