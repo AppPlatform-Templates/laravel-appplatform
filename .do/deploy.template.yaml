@@ -34,15 +34,15 @@ spec:
         - key: DB_CONNECTION
           value: "pgsql"
         - key: DB_HOST
-          value: "${db.HOSTNAME}"
+          value: "${laravel-db.HOSTNAME}"
         - key: DB_PORT
-          value: "${db.PORT}"
+          value: "${laravel-db.PORT}"
         - key: DB_DATABASE
-          value: "${db.DATABASE}"
+          value: "${laravel-db.DATABASE}"
         - key: DB_USERNAME
-          value: "${db.USERNAME}"
+          value: "${laravel-db.USERNAME}"
         - key: DB_PASSWORD
-          value: "${db.PASSWORD}"
+          value: "${laravel-db.PASSWORD}"
           scope: RUN_AND_BUILD_TIME
           type: SECRET
         - key: CACHE_DRIVER
@@ -125,7 +125,7 @@ spec:
 
   databases:
     - engine: PG
-      name: db
+      name: laravel-db
       production: true
       cluster_name: laravel-db
       version: "16"
