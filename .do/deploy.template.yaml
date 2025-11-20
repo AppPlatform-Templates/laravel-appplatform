@@ -149,8 +149,8 @@ spec:
       production: true
       cluster_name: laravel-db
       version: "16"
-    - engine: REDIS
+    - engine: VALKEY
       name: redis
       production: true
-      cluster_name: laravel-redis
-      version: "7"
+      cluster_name: laravel-valkey
+      version: "8"
