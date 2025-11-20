@@ -12,7 +12,7 @@ spec:
       instance_count: 1
       instance_size_slug: apps-d-1vcpu-0.5gb
       health_check:
-        http_path: /
+        http_path: /health
         initial_delay_seconds: 60
         period_seconds: 10
         timeout_seconds: 5
@@ -145,11 +145,9 @@ spec:
   databases:
     - engine: PG
       name: db
-      production: true
-      cluster_name: laravel-db
+      production: false
       version: "16"
     - engine: REDIS
       name: redis
-      production: true
-      cluster_name: laravel-redis
+      production: false
       version: "7"
