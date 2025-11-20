@@ -12,7 +12,7 @@ spec:
       instance_size_slug: apps-d-1vcpu-0.5gb
       autoscaling:
         min_instance_count: 2
-        max_instance_count: 10
+        max_instance_count: 4
         metrics:
           cpu:
             percent: 70
@@ -77,7 +77,7 @@ spec:
       instance_size_slug: apps-d-1vcpu-0.5gb
       autoscaling:
         min_instance_count: 1
-        max_instance_count: 5
+        max_instance_count: 2
         metrics:
           cpu:
             percent: 75
