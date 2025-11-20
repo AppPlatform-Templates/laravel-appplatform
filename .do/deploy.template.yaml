@@ -119,7 +119,6 @@ spec:
         repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/scheduler/Dockerfile
-      instance_count: 1
       instance_size_slug: apps-d-1vcpu-0.5gb
       envs:
         - key: APP_ENV
