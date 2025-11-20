@@ -56,72 +56,72 @@ spec:
         - key: FILESYSTEM_DISK
           value: "local"
 
-  workers:
-    - name: queue-worker
-      git:
-        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
-        branch: main
-      dockerfile_path: docker/queue-worker/Dockerfile
-      instance_count: 1
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      envs:
-        - key: APP_ENV
-          value: "production"
-        - key: APP_KEY
-          scope: RUN_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${db.PORT}"
-        - key: DB_DATABASE
-          value: "${db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${db.USERNAME}"
-        - key: DB_PASSWORD
-          scope: RUN_TIME
-          type: SECRET
-          value: "${db.PASSWORD}"
-        - key: CACHE_DRIVER
-          value: "file"
-        - key: QUEUE_CONNECTION
-          value: "sync"
-        - key: LOG_CHANNEL
-          value: "stderr"
+  # workers:
+  #   - name: queue-worker
+  #     git:
+  #       repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+  #       branch: main
+  #     dockerfile_path: docker/queue-worker/Dockerfile
+  #     instance_count: 1
+  #     instance_size_slug: apps-d-1vcpu-0.5gb
+  #     envs:
+  #       - key: APP_ENV
+  #         value: "production"
+  #       - key: APP_KEY
+  #         scope: RUN_TIME
+  #         type: SECRET
+  #       - key: DB_CONNECTION
+  #         value: "pgsql"
+  #       - key: DB_HOST
+  #         value: "${db.HOSTNAME}"
+  #       - key: DB_PORT
+  #         value: "${db.PORT}"
+  #       - key: DB_DATABASE
+  #         value: "${db.DATABASE}"
+  #       - key: DB_USERNAME
+  #         value: "${db.USERNAME}"
+  #       - key: DB_PASSWORD
+  #         scope: RUN_TIME
+  #         type: SECRET
+  #         value: "${db.PASSWORD}"
+  #       - key: CACHE_DRIVER
+  #         value: "file"
+  #       - key: QUEUE_CONNECTION
+  #         value: "sync"
+  #       - key: LOG_CHANNEL
+  #         value: "stderr"
 
-    - name: scheduler
-      git:
-        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
-        branch: main
-      dockerfile_path: docker/scheduler/Dockerfile
-      instance_count: 1
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      envs:
-        - key: APP_ENV
-          value: "production"
-        - key: APP_KEY
-          scope: RUN_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${db.PORT}"
-        - key: DB_DATABASE
-          value: "${db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${db.USERNAME}"
-        - key: DB_PASSWORD
-          scope: RUN_TIME
-          type: SECRET
-          value: "${db.PASSWORD}"
-        - key: CACHE_DRIVER
-          value: "file"
-        - key: LOG_CHANNEL
-          value: "stderr"
+  #   - name: scheduler
+  #     git:
+  #       repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+  #       branch: main
+  #     dockerfile_path: docker/scheduler/Dockerfile
+  #     instance_count: 1
+  #     instance_size_slug: apps-d-1vcpu-0.5gb
+  #     envs:
+  #       - key: APP_ENV
+  #         value: "production"
+  #       - key: APP_KEY
+  #         scope: RUN_TIME
+  #         type: SECRET
+  #       - key: DB_CONNECTION
+  #         value: "pgsql"
+  #       - key: DB_HOST
+  #         value: "${db.HOSTNAME}"
+  #       - key: DB_PORT
+  #         value: "${db.PORT}"
+  #       - key: DB_DATABASE
+  #         value: "${db.DATABASE}"
+  #       - key: DB_USERNAME
+  #         value: "${db.USERNAME}"
+  #       - key: DB_PASSWORD
+  #         scope: RUN_TIME
+  #         type: SECRET
+  #         value: "${db.PASSWORD}"
+  #       - key: CACHE_DRIVER
+  #         value: "file"
+  #       - key: LOG_CHANNEL
+  #         value: "stderr"
 
   databases:
     - engine: PG
