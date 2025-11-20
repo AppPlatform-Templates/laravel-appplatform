@@ -142,12 +142,14 @@ spec:
   #       - key: LOG_CHANNEL
   #         value: "stderr"
 
-  databases:
-    - engine: PG
-      name: db
-      production: false
-      version: "16"
-    - engine: REDIS
-      name: redis
-      production: false
-      version: "7"
+  # databases:
+  #   - engine: PG
+  #     name: db
+  #     production: true
+  #     cluster_name: laravel-db
+  #     version: "16"
+  #   - engine: REDIS
+  #     name: redis
+  #     production: true
+  #     cluster_name: laravel-redis
+  #     version: "7"
