@@ -9,7 +9,6 @@ spec:
         branch: main
       dockerfile_path: docker/web/Dockerfile
       http_port: 80
-      instance_count: 2
       instance_size_slug: professional-xs
       autoscaling:
         min_instance_count: 2
@@ -75,7 +74,6 @@ spec:
         repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/queue-worker/Dockerfile
-      instance_count: 1
       instance_size_slug: professional-xs
       autoscaling:
         min_instance_count: 1
