@@ -9,6 +9,7 @@ Production-ready Laravel template for DigitalOcean App Platform with auto-scalin
 ## Features
 
 - **Production-Ready Architecture**: Multi-component setup with web service, queue worker, and scheduler
+- **Auto-Scaling Ready**: Components can be configured for automatic scaling based on CPU usage
 - **Managed Services**: PostgreSQL and Redis managed databases included
 - **Queue Processing**: Background job processing with Laravel queues
 - **Task Scheduling**: Laravel scheduler runs every minute via App Platform's scheduled jobs
@@ -26,7 +27,7 @@ Production-ready Laravel template for DigitalOcean App Platform with auto-scalin
 │  ┌─────────────┐      ┌──────────────┐   ┌──────────────┐  │
 │  │ Web Service │      │Queue Worker  │   │  Scheduler   │  │
 │  │(Nginx+PHP)  │      │(Background)  │   │  (Worker)    │  │
-│  │  1 instance │      │  1 instance  │   │  1 instance  │  │
+│  │ Auto-scale  │      │ Auto-scale   │   │  Fixed: 1    │  │
 │  └──────┬──────┘      └──────┬───────┘   └──────┬───────┘  │
 │         │                    │                   │           │
 │         └────────────────────┼───────────────────┘           │
@@ -270,7 +271,7 @@ composer install
 ### Web Service
 
 - **Technology**: Nginx + PHP-FPM 8.3
-- **Scaling**: Manual (can be scaled in App Platform settings)
+- **Scaling**: Supports auto-scaling (configurable in App Platform)
 - **Instance Size**: `apps-d-1vcpu-0.5gb`
 - **Health Check**: `/health` endpoint
 - **Purpose**: Serves HTTP requests, dispatches jobs to queue
@@ -278,7 +279,7 @@ composer install
 ### Queue Worker
 
 - **Technology**: PHP CLI running `php artisan queue:work`
-- **Scaling**: Manual (can be scaled in App Platform settings)
+- **Scaling**: Supports auto-scaling (configurable in App Platform)
 - **Instance Size**: `apps-d-1vcpu-0.5gb`
 - **Purpose**: Processes background jobs from Redis queue
 - **Configuration**:
