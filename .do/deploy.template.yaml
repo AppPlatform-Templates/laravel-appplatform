@@ -5,7 +5,7 @@ spec:
   services:
     - name: web
       git:
-        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+        repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/web/Dockerfile
       http_port: 80
@@ -71,7 +71,7 @@ spec:
   workers:
     - name: queue-worker
       git:
-        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+        repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/queue-worker/Dockerfile
       instance_count: 1
@@ -117,7 +117,7 @@ spec:
 
     - name: scheduler
       git:
-        repo_clone_url: https://github.com/venkat-do/laravel-appplatform.git
+        repo_clone_url: https://github.com/AppPlatform-Templates/laravel-appplatform.git
         branch: main
       dockerfile_path: docker/scheduler/Dockerfile
       instance_count: 1

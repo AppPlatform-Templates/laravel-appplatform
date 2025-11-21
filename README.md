@@ -1,6 +1,6 @@
 # Laravel on DigitalOcean App Platform
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/venkat-do/laravel-appplatform/tree/main)
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/AppPlatform-Templates/laravel-appplatform/tree/main)
 
 Production-ready Laravel template for DigitalOcean App Platform with auto-scaling, managed databases and queue processing.
 
@@ -115,7 +115,7 @@ All other variables are automatically configured by App Platform's managed servi
 ### Step 1: Fork or Clone
 
 ```bash
-git clone https://github.com/venkat-do/laravel-appplatform.git
+git clone https://github.com/AppPlatform-Templates/laravel-appplatform.git
 cd laravel-appplatform
 ```
 
@@ -385,7 +385,7 @@ Monitor in the App Platform dashboard:
 
 ## Support
 
-- **Template Issues**: [GitHub Issues](https://github.com/venkat-do/laravel-appplatform/issues)
+- **Template Issues**: [GitHub Issues](https://github.com/AppPlatform-Templates/laravel-appplatform/issues)
 - **App Platform Support**: [DigitalOcean Support](https://www.digitalocean.com/support)
 - **Laravel Questions**: [Laravel Community](https://laravel.com/community)
 
