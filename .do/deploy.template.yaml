@@ -10,10 +10,9 @@ spec:
       dockerfile_path: docker/web/Dockerfile
       http_port: 80
       instance_size_slug: apps-d-1vcpu-0.5gb
-      instance_count: 2
       autoscaling:
-        min_instances: 2
-        max_instances: 4
+        min_instance_count: 2
+        max_instance_count: 4
         metrics:
           cpu:
             percent: 70
@@ -81,10 +80,9 @@ spec:
         branch: main
       dockerfile_path: docker/queue-worker/Dockerfile
       instance_size_slug: apps-d-1vcpu-0.5gb
-      instance_count: 1
       autoscaling:
-        min_instances: 1
-        max_instances: 2
+        min_instance_count: 1
+        max_instance_count: 2
         metrics:
           cpu:
             percent: 75
