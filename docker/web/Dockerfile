@@ -25,8 +25,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install npm dependencies
-RUN npm ci --production=false
+# Install npm dependencies (use npm install to avoid rollup native module issues)
+RUN rm -f package-lock.json && npm install
 
 # Copy application files needed for build
 COPY . .
