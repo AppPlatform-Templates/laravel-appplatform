@@ -4,6 +4,42 @@
 
 Deploy your Laravel application to DigitalOcean App Platform in minutes with production-ready configuration including queues, scheduling, and managed databases.
 
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                DigitalOcean App Platform                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐ │
+│  │  Web Service    │  │  Queue Worker   │  │  Scheduler  │ │
+│  │  (Nginx + PHP)  │  │  (Background)   │  │  (Worker)   │ │
+│  │                 │  │                 │  │             │ │
+│  │  Auto-scaling:  │  │  Auto-scaling:  │  │  Fixed: 1   │ │
+│  │  min-max        │  │  min-max        │  │  instance   │ │
+│  │  instances      │  │  instances      │  │             │ │
+│  └────────┬────────┘  └────────┬────────┘  └──────┬──────┘ │
+│           │                    │                   │         │
+│           └────────────────────┼───────────────────┘         │
+│                                │                             │
+├────────────────────────────────┼─────────────────────────────┤
+│                                │                             │
+│  ┌──────────────────┐    ┌─────────────────┐               │
+│  │   PostgreSQL     │    │  Redis/Valkey   │               │
+│  │  (Managed DB)    │    │   (Managed)     │               │
+│  │   Version 16     │    │   Version 8     │               │
+│  └──────────────────┘    └─────────────────┘               │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+```
+
+**Components:**
+- **Web Service**: Handles HTTP requests with auto-scaling based on CPU usage
+- **Queue Worker**: Processes background jobs with auto-scaling based on load
+- **Scheduler**: Runs Laravel scheduled tasks (fixed single instance)
+- **PostgreSQL**: Managed database for application data
+- **Redis/Valkey**: Managed cache and queue backend
+
 ## Quick Start
 
 This template provides the infrastructure configuration for running Laravel on App Platform. Follow these steps to deploy your own Laravel application:
