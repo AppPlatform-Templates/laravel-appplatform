@@ -26,8 +26,10 @@ Add your Laravel application files to your forked repository:
 
 ### 3. Deploy to DigitalOcean
 
-Click the **Deploy to DigitalOcean** button at the top of your forked repository's README, or:
+#### Option 1
+1. Click the **Deploy to DigitalOcean** button at the top of your forked repository's README
 
+#### Option 2
 1. Go to [DigitalOcean App Platform](https://cloud.digitalocean.com/apps)
 2. Click **Create App**
 3. Connect your forked repository
