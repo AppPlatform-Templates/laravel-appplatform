@@ -46,12 +46,10 @@ After creating the app, you must set the `APP_KEY` environment variable:
    ```
 
 2. Set the `APP_KEY` as an **app-level environment variable** in App Platform:
-   - Go to your app → Settings → App-Level Environment Variables
+   - Go to your app → App-Level Environment Variables
    - Click "Edit" or "Add Variable"
    - Add `APP_KEY` with the value from step 1
    - Click "Save"
-
-   **Important**: Set this as an **app-level** environment variable, not per-component. App-level variables apply to all components (web, queue-worker, scheduler) automatically and override any component-level settings.
 
 3. Your app will automatically redeploy with the new key
 
@@ -65,7 +63,7 @@ This template includes PostgreSQL and Redis databases by default. If you want to
 1. Create databases before or during app creation:
    - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
    - Redis database cluster (recommended: Basic plan, 1GB RAM)
-2. After clicking **Create Resources**, go to your app → Settings → Database
+2. After clicking **Create App**, go to your app → Overview
 3. Attach both databases to your app
 4. The app will automatically redeploy
 
@@ -74,7 +72,7 @@ This template includes PostgreSQL and Redis databases by default. If you want to
 2. Create database clusters:
    - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
    - Redis/Valkey database cluster (recommended: Basic plan, 1GB RAM)
-3. Go to your app → Settings → Database
+3. Go to your app → Overview
 4. Attach both databases to your app
 5. The app will automatically redeploy
 
