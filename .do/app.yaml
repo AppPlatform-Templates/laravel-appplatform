@@ -32,7 +32,6 @@ services:
       - key: APP_URL
         value: "${APP_URL}"
       - key: APP_KEY
-        value: "base64:CHANGE_THIS_TO_YOUR_GENERATED_KEY"
         scope: RUN_AND_BUILD_TIME
         type: SECRET
       - key: DB_CONNECTION
