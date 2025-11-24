@@ -38,7 +38,7 @@ Add your Laravel application files to your forked repository:
 
 ### 4. Configure Your App
 
-After creating the app, you must set the `APP_KEY` environment variable:
+Before creating the app, you must set the `APP_KEY` environment variable:
 
 1. Generate an application key:
    ```bash
@@ -50,8 +50,8 @@ After creating the app, you must set the `APP_KEY` environment variable:
    - Click "Edit" or "Add Variable"
    - Add `APP_KEY` with the value from step 1
    - Click "Save"
-
-3. Your app will automatically redeploy with the new key
+  
+3. Click **Create App**
 
 ### 5. Set Up Databases (If Using Databases)
 
