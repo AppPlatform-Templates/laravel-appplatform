@@ -2,399 +2,214 @@
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/AppPlatform-Templates/laravel-appplatform/tree/main)
 
-Production-ready Laravel template for DigitalOcean App Platform with auto-scaling, managed databases and queue processing.
+Deploy your Laravel application to DigitalOcean App Platform in minutes with production-ready configuration including queues, scheduling, and managed databases.
 
-> **Note**: This is a **configuration template** providing Docker and App Platform setup for Laravel. You'll need to add your Laravel application files. See [TEMPLATE_USAGE.md](./TEMPLATE_USAGE.md) for instructions.
+## Quick Start
 
-## Features
+This template provides the infrastructure configuration for running Laravel on App Platform. Follow these steps to deploy your own Laravel application:
 
-- **Production-Ready Architecture**: Multi-component setup with web service, queue worker, and scheduler
-- **Auto-Scaling Ready**: Components can be configured for automatic scaling based on CPU usage
-- **Managed Services**: PostgreSQL and Redis managed databases included
-- **Queue Processing**: Background job processing with Laravel queues
-- **Task Scheduling**: Laravel scheduler runs every minute via App Platform's scheduled jobs
-- **Object Storage**: Ready for DigitalOcean Spaces integration for file uploads
-- **Health Checks**: Built-in health endpoints for monitoring
-- **Optimized Docker**: Multi-stage builds with PHP 8.3, Nginx, and production optimizations
+### 1. Fork This Repository
 
-## Architecture
+Click the **Fork** button at the top of this repository to create your own copy.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                DigitalOcean App Platform                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                               │
-│  ┌─────────────┐      ┌──────────────┐   ┌──────────────┐  │
-│  │ Web Service │      │Queue Worker  │   │  Scheduler   │  │
-│  │(Nginx+PHP)  │      │(Background)  │   │  (Worker)    │  │
-│  │ Auto-scale  │      │ Auto-scale   │   │  Fixed: 1    │  │
-│  └──────┬──────┘      └──────┬───────┘   └──────┬───────┘  │
-│         │                    │                   │           │
-│         └────────────────────┼───────────────────┘           │
-│                              │                               │
-├──────────────────────────────┼───────────────────────────────┤
-│                              │                               │
-│  ┌────────────────┐    ┌─────────────┐                      │
-│  │   PostgreSQL   │    │    Redis    │                      │
-│  │  (Managed DB)  │    │  (Managed)  │                      │
-│  │    Version 16  │    │  Version 7  │                      │
-│  └────────────────┘    └─────────────┘                      │
-│                                                               │
-└───────────────────────────────────────────────────────────────┘
-```
+### 2. Add Your Laravel Code
 
-## Deployment Modes
+Add your Laravel application files to your forked repository:
 
-This template offers two deployment configurations:
+- Add your `app/`, `config/`, `database/`, `routes/`, and other Laravel directories
+- Add your `composer.json` and Laravel-specific files
+- Keep these template files:
+  - `.do/` directory (deployment configuration)
+  - `Dockerfile` (production setup)
+  - `docker-compose.yml` (local development)
+  - `.dockerignore`
 
-### Production Mode (Default)
+### 3. Deploy to DigitalOcean
 
-**Best for**: Production workloads, high-traffic applications, SaaS platforms
+Click the **Deploy to DigitalOcean** button at the top of your forked repository's README, or:
 
-- ✅ Web service (scalable)
-- ✅ Queue worker (scalable)
-- ✅ Scheduler worker
-- ✅ Managed PostgreSQL (production)
-- ✅ Managed Redis/Valkey
+1. Go to [DigitalOcean App Platform](https://cloud.digitalocean.com/apps)
+2. Click **Create App**
+3. Connect your forked repository
+4. App Platform will detect the `.do/deploy.template.yaml` configuration
+5. Click **Next** through the setup and **Create Resources**
 
-**Deploy**: Click the button above or see [Manual Deployment](#manual-deployment)
+### 4. Set Up Databases (If Using Databases)
 
-### Starter Mode - $17-22/month
+This template includes PostgreSQL and Redis databases by default. If you want to use databases, you must attach them after creating the app. If you don't need databases, remove the `databases` section from `.do/deploy.template.yaml` before deploying.
 
-**Best for**: Development, testing, small applications, learning
-
-- ✅ Single web instance
-- ✅ Optional scheduler
-- ✅ Dev Database (PostgreSQL)
-- ❌ No Redis (uses database for cache)
-- ❌ No queue worker (sync jobs)
-
-**Deploy**: See [.do/examples/README.md](.do/examples/README.md)
-
-| Feature | Starter | Production |
-|---------|---------|------------|
-| Web instances | 1 | 1+ (scalable) |
-| Queue worker | No (sync) | Yes (scalable) |
-| Database | Dev (1GB) | Managed (scalable) |
-| Redis/Valkey | No | Yes |
-
-[**Compare all features →**](.do/examples/README.md)
-
----
-
-## Quick Deploy (Production Mode)
-
-Click the Deploy to DigitalOcean button above to deploy this Laravel application.
-
-### Important: Database Setup
-
-The Deploy button creates the app but **does not automatically provision databases**. You have two options:
+**If you're using databases**, choose one of these options:
 
 #### Option 1: Create Databases First (Recommended)
-1. Create a PostgreSQL database cluster in DigitalOcean
-2. Create a Redis/Valkey database cluster in DigitalOcean
-3. Click the Deploy button
-4. During app creation, attach the existing databases
+1. Create databases before or during app creation:
+   - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
+   - Redis database cluster (recommended: Basic plan, 1GB RAM)
+2. After clicking **Create Resources**, go to your app → Settings → Database
+3. Attach both databases to your app
+4. The app will automatically redeploy
 
-#### Option 2: Create App First, Attach Later
-1. Click the Deploy button
-2. Create the app (it will fail to connect to databases initially)
-3. Create PostgreSQL and Redis/Valkey database clusters
-4. Attach the databases to your app in App Platform settings
-5. Redeploy the app
+#### Option 2: Create Databases After App Creation
+1. Click **Create Resources** (app will fail to deploy without databases)
+2. Create database clusters:
+   - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
+   - Redis database cluster (recommended: Basic plan, 1GB RAM)
+3. Go to your app → Settings → Database
+4. Attach both databases to your app
+5. The app will automatically redeploy
 
-### What Gets Created
+### 5. Configure Your App
 
-- **Web Service**: 1 instance, serves HTTP traffic
-- **Queue Worker**: 1 instance, processes background jobs
-- **Scheduler**: 1 instance (Worker), runs Laravel scheduled tasks every minute
+After deployment:
 
-### Required Configuration
+1. Generate an application key:
+   ```bash
+   php artisan key:generate --show
+   ```
 
-After deployment, you'll need to set:
+2. Set the `APP_KEY` in App Platform:
+   - Go to your app → Settings → App-Level Environment Variables
+   - Add `APP_KEY` with the value from step 1
 
-1. **APP_KEY**: Generate with `php artisan key:generate --show`
-   - Set this in the App Platform environment variables
+3. Your app will automatically redeploy with the new key
 
-All other variables are automatically configured when databases are attached.
+That's it! Your Laravel app is now live on DigitalOcean.
 
-## Manual Deployment
+## What Gets Deployed
 
-### Prerequisites
+This template creates:
 
-- DigitalOcean account
-- `doctl` CLI installed and configured
-- Git repository (GitHub, GitLab, or public Git)
+- **Web Service**: Nginx + PHP 8.3 serving your Laravel app
+- **Queue Worker**: Processes background jobs using Laravel queues
+- **Scheduler**: Runs Laravel scheduled tasks every minute
+- **PostgreSQL Database**: Managed database for your data (optional)
+- **Redis**: For caching and queue management (optional)
 
-### Step 1: Fork or Clone
+All components are production-optimized with caching, health checks, and auto-scaling support.
 
-```bash
-git clone https://github.com/AppPlatform-Templates/laravel-appplatform.git
-cd laravel-appplatform
-```
+## Local Development
 
-### Step 2: Generate Application Key
-
-```bash
-# Locally (requires PHP and Composer)
-composer install
-php artisan key:generate --show
-```
-
-Copy the generated key (format: `base64:...`) for Step 4.
-
-### Step 3: Create the App
+Test your setup locally with Docker:
 
 ```bash
-# Using the deploy template
-doctl apps create --spec .do/deploy.template.yaml
-```
-
-Or use the GitHub-connected version:
-
-```bash
-# Update .do/app.yaml with your repository
-doctl apps create --spec .do/app.yaml
-```
-
-### Step 4: Set Environment Variables
-
-```bash
-# Get your app ID
-APP_ID=$(doctl apps list --format ID --no-header | head -1)
-
-# Set the APP_KEY you generated in Step 2
-doctl apps update $APP_ID --update-env-var APP_KEY="base64:YOUR_KEY_HERE"
-```
-
-### Step 5: Monitor Deployment
-
-```bash
-# Watch deployment progress
-doctl apps list
-
-# Get app URL
-doctl apps get $APP_ID --format DefaultIngress
-```
-
-Visit the URL to see your Laravel application!
-
-## Configuration
-
-### Environment Variables
-
-All required environment variables are pre-configured in the App Spec. The main ones you may customize:
-
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `APP_KEY` | Encryption key | None | **Yes** |
-| `APP_NAME` | Application name | `Laravel on App Platform` | No |
-| `APP_ENV` | Environment | `production` | No |
-| `APP_DEBUG` | Debug mode | `false` | No |
-| `FILESYSTEM_DISK` | Storage driver | `local` | No |
-
-### Database Configuration
-
-Database credentials are automatically injected by App Platform:
-
-- `DB_HOST`: `${db.HOSTNAME}`
-- `DB_PORT`: `${db.PORT}`
-- `DB_DATABASE`: `${db.DATABASE}`
-- `DB_USERNAME`: `${db.USERNAME}`
-- `DB_PASSWORD`: `${db.PASSWORD}`
-
-### Redis Configuration
-
-Redis credentials are automatically injected:
-
-- `REDIS_HOST`: `${redis.HOSTNAME}`
-- `REDIS_PORT`: `${redis.PORT}`
-- `REDIS_PASSWORD`: `${redis.PASSWORD}`
-
-### File Storage (Optional)
-
-To use DigitalOcean Spaces for file uploads:
-
-1. **Create a Spaces bucket** using one of these methods:
-   - **DigitalOcean Console**: Navigate to Spaces and create a new bucket
-   - **s3cmd**: `s3cmd mb s3://laravel-storage`
-   - **AWS CLI**: `aws s3 mb s3://laravel-storage --endpoint-url https://nyc3.digitaloceanspaces.com`
-
-   > **Note**: `doctl` does not support Spaces bucket management. Use the console, s3cmd, or AWS CLI.
-
-2. **Create access credentials** in the DigitalOcean Console:
-   - Go to API → Spaces Keys → Generate New Key
-
-3. **Update environment variables** in App Platform:
-```bash
-FILESYSTEM_DISK=s3
-AWS_ACCESS_KEY_ID=your-spaces-key
-AWS_SECRET_ACCESS_KEY=your-spaces-secret
-AWS_BUCKET=laravel-storage
-AWS_DEFAULT_REGION=nyc3
-AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com
-```
-
-## Development
-
-### Local Development with Docker
-
-```bash
-# Build and run locally
 docker compose up -d
-
-# Run migrations
 docker compose exec web php artisan migrate
-
-# Generate app key
 docker compose exec web php artisan key:generate
 ```
 
-### Local Development with Laravel Sail
+Visit `http://localhost:8080`
 
+## Deployment Modes
+
+### Production Mode (Default)
+Full setup with web service, queue worker, scheduler, PostgreSQL, and Redis.
+
+**Cost**: ~$40-60/month depending on instance sizes
+
+### Starter Mode
+Simplified setup for smaller apps with reduced infrastructure.
+
+**Cost**: ~$17-22/month
+
+See [.do/examples/README.md](.do/examples/README.md) for starter mode configuration.
+
+## Template Information
+
+This template is based on **Laravel 11.x** with PHP 8.3, PostgreSQL 16, and Redis 7.
+
+**What's included:**
+- Docker configuration (web, queue worker, scheduler)
+- App Platform deployment specs (`.do/deploy.template.yaml`)
+- Production-ready Nginx and PHP-FPM configuration
+- Auto-scaling support
+
+**What you need to add:**
+- Your Laravel application code (`app/`, `config/`, `routes/`, etc.)
+- Your `composer.json` with dependencies
+- Your views and assets
+
+See [Alternative Configurations](./.do/examples/README.md) for starter mode and other deployment options.
+
+## Common Tasks
+
+### Run Database Migrations
+
+From the App Platform console:
+1. Go to your app → Console
+2. Select the `web` component
+3. Run: `php artisan migrate`
+
+Or use `doctl`:
 ```bash
-# Install dependencies
-composer install
-
-# Start Sail
-./vendor/bin/sail up -d
-
-# Run migrations
-./vendor/bin/sail artisan migrate
-
-# Generate app key
-./vendor/bin/sail artisan key:generate
+doctl apps create-deployment <app-id> --exec-command "php artisan migrate"
 ```
 
-## Components
+### Configure File Storage (Spaces)
 
-### Web Service
+To use DigitalOcean Spaces for file uploads:
 
-- **Technology**: Nginx + PHP-FPM 8.3
-- **Scaling**: Supports auto-scaling (configurable in App Platform)
-- **Instance Size**: `apps-d-1vcpu-0.5gb`
-- **Health Check**: `/health` endpoint
-- **Purpose**: Serves HTTP requests, dispatches jobs to queue
+1. Create a Spaces bucket in your DigitalOcean account
+2. Generate Spaces access keys (API → Spaces Keys)
+3. Add environment variables in App Platform:
+   ```
+   FILESYSTEM_DISK=s3
+   AWS_ACCESS_KEY_ID=your-key
+   AWS_SECRET_ACCESS_KEY=your-secret
+   AWS_BUCKET=your-bucket-name
+   AWS_DEFAULT_REGION=nyc3
+   AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com
+   ```
 
-### Queue Worker
+### View Logs
 
-- **Technology**: PHP CLI running `php artisan queue:work`
-- **Scaling**: Supports auto-scaling (configurable in App Platform)
-- **Instance Size**: `apps-d-1vcpu-0.5gb`
-- **Purpose**: Processes background jobs from Redis queue
-- **Configuration**:
-  - `--tries=3`: Retry failed jobs 3 times
-  - `--timeout=90`: Max 90 seconds per job
-  - `--max-jobs=1000`: Restart after 1000 jobs
-  - `--max-time=3600`: Restart after 1 hour
+```bash
+# All components
+doctl apps logs <app-id> --follow
 
-### Scheduler
-
-- **Technology**: PHP CLI running `php artisan schedule:run`
-- **Component Type**: Worker (continuous loop, not SCHEDULED job)
-- **Frequency**: Every 60 seconds
-- **Instance Size**: `apps-d-1vcpu-0.5gb`
-- **Purpose**: Runs Laravel's task scheduler
-
-> **Note**: The scheduler runs as a **Worker** (not a SCHEDULED job) because Laravel's scheduler needs to run every minute, but App Platform's scheduled jobs have a minimum interval of 15 minutes. The Worker runs a continuous loop that executes `schedule:run` every 60 seconds.
-
-## Estimated Costs
-
-Costs depend on instance sizes and database tiers you choose. See [DigitalOcean App Platform Pricing](https://www.digitalocean.com/pricing/app-platform) for current rates.
-
-## Performance Optimization
-
-### PHP Optimizations Included
-
-- **Opcache**: Pre-configured for production with validation disabled
-- **Config Caching**: Runs `php artisan config:cache` during build
-- **Route Caching**: Runs `php artisan route:cache` during build
-- **View Caching**: Runs `php artisan view:cache` during build
-- **Composer**: Uses `--optimize-autoloader --no-dev`
-
-### Nginx Optimizations
-
-- Gzip compression enabled
-- Static file caching (1 year expiry)
-- FastCGI buffering configured
-- Worker connections optimized
-
-### Recommended Additional Optimizations
-
-- Enable Cloudflare or App Platform CDN for static assets
-- Implement Redis caching for database queries
-- Use Laravel Horizon for queue monitoring
-- Set up log forwarding for better observability
-
-## Monitoring
-
-### Built-in Health Checks
-
-- **Web Service**: `GET /` (configured in App Spec)
-- **PHP-FPM**: `GET /fpm-ping` (internal)
-- **PHP-FPM Status**: `GET /fpm-status` (internal, localhost only)
-
-### App Platform Metrics
-
-Monitor in the App Platform dashboard:
-- CPU usage per component
-- Memory usage per component
-- HTTP request rate and latency
-- Deployment history and logs
-
-### Recommended Monitoring Tools
-
-- **Laravel Horizon**: Queue dashboard (install separately)
-- **Laravel Telescope**: Debugging tool (development only)
-- **External Monitoring**: UptimeRobot, Pingdom, or Datadog
-- **APM**: New Relic, Scout APM
+# Specific component
+doctl apps logs <app-id> --component web --follow
+```
 
 ## Troubleshooting
 
-### App Won't Start
+**App won't start?**
+- Ensure `APP_KEY` is set in environment variables
+- Check that databases are attached and running (if using databases)
+- Review build logs: `doctl apps logs <app-id> --type build`
 
-1. Check APP_KEY is set: `doctl apps list-env-vars <app-id>`
-2. Review deployment logs: `doctl apps logs <app-id> --type build`
-3. Verify database migrations ran successfully
+**Queue jobs not processing?**
+- Verify Redis is connected
+- Check queue-worker logs: `doctl apps logs <app-id> --component queue-worker`
 
-### Queue Jobs Not Processing
+**Database connection errors?**
+- Confirm PostgreSQL database is attached
+- Verify database credentials in App Platform settings
+- Ensure database is in the same region as your app
 
-1. Check queue worker logs: `doctl apps logs <app-id> --component queue-worker`
-2. Verify Redis connection: Check Redis environment variables
-3. Ensure jobs are being dispatched: `php artisan queue:work --once`
+**500 errors?**
+- Check app logs for detailed error messages
+- Verify all environment variables are set correctly
+- Ensure `APP_DEBUG=false` in production
 
-### Database Connection Errors
+## Environment Variables Reference
 
-1. Verify database is running: `doctl databases list`
-2. Check database credentials in environment variables
-3. Ensure trusted sources include App Platform (configured automatically)
+Key variables you need to set:
 
-### 500 Errors
-
-1. Check application logs: `doctl apps logs <app-id>`
-2. Verify `APP_DEBUG=false` (errors won't show details in production)
-3. Check storage permissions are set correctly
-4. Ensure all caches are cleared
-
-## Additional Resources
-
-- **[Getting Started Guide](./GETTING_STARTED.md)** - Step-by-step tutorial to build and deploy a Laravel app
-- [Deployment Guide](./DEPLOYMENT_GUIDE.md) - Comprehensive deployment documentation
-- [Alternative Configurations](./.do/examples/README.md) - Starter mode and other options
-- [Template Usage](./TEMPLATE_USAGE.md) - How to use this template
-- [Version Info](./VERSION.md) - Laravel version and update policy
-- [Laravel Documentation](https://laravel.com/docs)
-- [App Platform Documentation](https://docs.digitalocean.com/products/app-platform/)
-- [App Spec Reference](https://docs.digitalocean.com/products/app-platform/reference/app-spec/)
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `APP_KEY` | Laravel encryption key (generate with `php artisan key:generate --show`) | Yes |
+| `APP_ENV` | Environment (production recommended) | Yes |
+| `APP_DEBUG` | Debug mode (false for production) | Yes |
+| `DB_*` | Database credentials (auto-injected when database attached) | If using DB |
+| `REDIS_*` | Redis credentials (auto-injected when Redis attached) | If using Redis |
+| `FILESYSTEM_DISK` | Storage driver (local or s3 for Spaces) | No |
+| `AWS_*` | Spaces credentials (if using DigitalOcean Spaces) | If using Spaces |
 
 ## Support
 
-- **Template Issues**: [GitHub Issues](https://github.com/AppPlatform-Templates/laravel-appplatform/issues)
-- **App Platform Support**: [DigitalOcean Support](https://www.digitalocean.com/support)
-- **Laravel Questions**: [Laravel Community](https://laravel.com/community)
+- Template Issues: [GitHub Issues](https://github.com/AppPlatform-Templates/laravel-appplatform/issues)
+- App Platform Docs: [DigitalOcean Documentation](https://docs.digitalocean.com/products/app-platform/)
+- Laravel Help: [Laravel Community](https://laravel.com/community)
 
 ## License
 
-This template is open-sourced software licensed under the [MIT license](LICENSE).
-
-Laravel framework is a trademark of Taylor Otwell. This template is not officially endorsed by or affiliated with the Laravel project.
+MIT License. See [LICENSE](LICENSE) file.
