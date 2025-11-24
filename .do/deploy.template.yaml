@@ -27,9 +27,6 @@ spec:
           value: "false"
         - key: APP_URL
           value: "${APP_URL}"
-        - key: APP_KEY
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
         - key: DB_CONNECTION
           value: "pgsql"
         - key: DB_HOST
@@ -78,9 +75,6 @@ spec:
       envs:
         - key: APP_ENV
           value: "production"
-        - key: APP_KEY
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
         - key: DB_CONNECTION
           value: "pgsql"
         - key: DB_HOST
@@ -124,9 +118,6 @@ spec:
       envs:
         - key: APP_ENV
           value: "production"
-        - key: APP_KEY
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
         - key: DB_CONNECTION
           value: "pgsql"
         - key: DB_HOST
