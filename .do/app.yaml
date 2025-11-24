@@ -2,178 +2,177 @@
 # This file is for reference and can be used with: doctl apps create --spec .do/app.yaml
 # For Deploy-to-DO button, use .do/deploy.template.yaml instead
 
-spec:
-  name: laravel-app
-  region: nyc3
+name: laravel-app
+region: nyc3
 
-  services:
-    - name: web
-      github:
-        repo: AppPlatform-Templates/laravel-appplatform
-        branch: main
-        deploy_on_push: true
-      dockerfile_path: docker/web/Dockerfile
-      http_port: 80
-      instance_count: 1
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      health_check:
-        http_path: /health
-        initial_delay_seconds: 60
-        period_seconds: 10
-        timeout_seconds: 5
-        success_threshold: 1
-        failure_threshold: 3
-      envs:
-        - key: APP_NAME
-          value: "Laravel on App Platform"
-        - key: APP_ENV
-          value: "production"
-        - key: APP_DEBUG
-          value: "false"
-        - key: APP_URL
-          value: "${APP_URL}"
-        - key: APP_KEY
-          value: "base64:CHANGE_THIS_TO_YOUR_GENERATED_KEY"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${laravel-db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${laravel-db.PORT}"
-        - key: DB_DATABASE
-          value: "${laravel-db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${laravel-db.USERNAME}"
-        - key: DB_PASSWORD
-          value: "${laravel-db.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: CACHE_DRIVER
-          value: "redis"
-        - key: SESSION_DRIVER
-          value: "redis"
-        - key: QUEUE_CONNECTION
-          value: "redis"
-        - key: LOG_CHANNEL
-          value: "stderr"
-        - key: FILESYSTEM_DISK
-          value: "local"
-        - key: REDIS_HOST
-          value: "${laravel-valkey.HOSTNAME}"
-        - key: REDIS_PASSWORD
-          value: "${laravel-valkey.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: REDIS_PORT
-          value: "${laravel-valkey.PORT}"
-        - key: REDIS_USERNAME
-          value: "${laravel-valkey.USERNAME}"
-        - key: REDIS_SCHEME
-          value: "tls"
+services:
+  - name: web
+    github:
+      repo: AppPlatform-Templates/laravel-appplatform
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: docker/web/Dockerfile
+    http_port: 80
+    instance_count: 1
+    instance_size_slug: apps-d-1vcpu-0.5gb
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 60
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: APP_NAME
+        value: "Laravel on App Platform"
+      - key: APP_ENV
+        value: "production"
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: "${APP_URL}"
+      - key: APP_KEY
+        value: "base64:CHANGE_THIS_TO_YOUR_GENERATED_KEY"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: DB_CONNECTION
+        value: "pgsql"
+      - key: DB_HOST
+        value: "${laravel-db.HOSTNAME}"
+      - key: DB_PORT
+        value: "${laravel-db.PORT}"
+      - key: DB_DATABASE
+        value: "${laravel-db.DATABASE}"
+      - key: DB_USERNAME
+        value: "${laravel-db.USERNAME}"
+      - key: DB_PASSWORD
+        value: "${laravel-db.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: CACHE_DRIVER
+        value: "redis"
+      - key: SESSION_DRIVER
+        value: "redis"
+      - key: QUEUE_CONNECTION
+        value: "redis"
+      - key: LOG_CHANNEL
+        value: "stderr"
+      - key: FILESYSTEM_DISK
+        value: "local"
+      - key: REDIS_HOST
+        value: "${laravel-valkey.HOSTNAME}"
+      - key: REDIS_PASSWORD
+        value: "${laravel-valkey.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: REDIS_PORT
+        value: "${laravel-valkey.PORT}"
+      - key: REDIS_USERNAME
+        value: "${laravel-valkey.USERNAME}"
+      - key: REDIS_SCHEME
+        value: "tls"
 
-  workers:
-    - name: queue-worker
-      github:
-        repo: AppPlatform-Templates/laravel-appplatform
-        branch: main
-        deploy_on_push: true
-      dockerfile_path: docker/queue-worker/Dockerfile
-      instance_count: 1
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      envs:
-        - key: APP_ENV
-          value: "production"
-        - key: APP_KEY
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${laravel-db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${laravel-db.PORT}"
-        - key: DB_DATABASE
-          value: "${laravel-db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${laravel-db.USERNAME}"
-        - key: DB_PASSWORD
-          value: "${laravel-db.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: CACHE_DRIVER
-          value: "redis"
-        - key: QUEUE_CONNECTION
-          value: "redis"
-        - key: LOG_CHANNEL
-          value: "stderr"
-        - key: REDIS_HOST
-          value: "${laravel-valkey.HOSTNAME}"
-        - key: REDIS_PASSWORD
-          value: "${laravel-valkey.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: REDIS_PORT
-          value: "${laravel-valkey.PORT}"
-        - key: REDIS_USERNAME
-          value: "${laravel-valkey.USERNAME}"
-        - key: REDIS_SCHEME
-          value: "tls"
+workers:
+  - name: queue-worker
+    github:
+      repo: AppPlatform-Templates/laravel-appplatform
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: docker/queue-worker/Dockerfile
+    instance_count: 1
+    instance_size_slug: apps-d-1vcpu-0.5gb
+    envs:
+      - key: APP_ENV
+        value: "production"
+      - key: APP_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: DB_CONNECTION
+        value: "pgsql"
+      - key: DB_HOST
+        value: "${laravel-db.HOSTNAME}"
+      - key: DB_PORT
+        value: "${laravel-db.PORT}"
+      - key: DB_DATABASE
+        value: "${laravel-db.DATABASE}"
+      - key: DB_USERNAME
+        value: "${laravel-db.USERNAME}"
+      - key: DB_PASSWORD
+        value: "${laravel-db.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: CACHE_DRIVER
+        value: "redis"
+      - key: QUEUE_CONNECTION
+        value: "redis"
+      - key: LOG_CHANNEL
+        value: "stderr"
+      - key: REDIS_HOST
+        value: "${laravel-valkey.HOSTNAME}"
+      - key: REDIS_PASSWORD
+        value: "${laravel-valkey.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: REDIS_PORT
+        value: "${laravel-valkey.PORT}"
+      - key: REDIS_USERNAME
+        value: "${laravel-valkey.USERNAME}"
+      - key: REDIS_SCHEME
+        value: "tls"
 
-    - name: scheduler
-      github:
-        repo: AppPlatform-Templates/laravel-appplatform
-        branch: main
-        deploy_on_push: true
-      dockerfile_path: docker/scheduler/Dockerfile
-      instance_count: 1
-      instance_size_slug: apps-d-1vcpu-0.5gb
-      envs:
-        - key: APP_ENV
-          value: "production"
-        - key: APP_KEY
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: DB_CONNECTION
-          value: "pgsql"
-        - key: DB_HOST
-          value: "${laravel-db.HOSTNAME}"
-        - key: DB_PORT
-          value: "${laravel-db.PORT}"
-        - key: DB_DATABASE
-          value: "${laravel-db.DATABASE}"
-        - key: DB_USERNAME
-          value: "${laravel-db.USERNAME}"
-        - key: DB_PASSWORD
-          value: "${laravel-db.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: CACHE_DRIVER
-          value: "redis"
-        - key: LOG_CHANNEL
-          value: "stderr"
-        - key: REDIS_HOST
-          value: "${laravel-valkey.HOSTNAME}"
-        - key: REDIS_PASSWORD
-          value: "${laravel-valkey.PASSWORD}"
-          scope: RUN_AND_BUILD_TIME
-          type: SECRET
-        - key: REDIS_PORT
-          value: "${laravel-valkey.PORT}"
-        - key: REDIS_USERNAME
-          value: "${laravel-valkey.USERNAME}"
-        - key: REDIS_SCHEME
-          value: "tls"
+  - name: scheduler
+    github:
+      repo: AppPlatform-Templates/laravel-appplatform
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: docker/scheduler/Dockerfile
+    instance_count: 1
+    instance_size_slug: apps-d-1vcpu-0.5gb
+    envs:
+      - key: APP_ENV
+        value: "production"
+      - key: APP_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: DB_CONNECTION
+        value: "pgsql"
+      - key: DB_HOST
+        value: "${laravel-db.HOSTNAME}"
+      - key: DB_PORT
+        value: "${laravel-db.PORT}"
+      - key: DB_DATABASE
+        value: "${laravel-db.DATABASE}"
+      - key: DB_USERNAME
+        value: "${laravel-db.USERNAME}"
+      - key: DB_PASSWORD
+        value: "${laravel-db.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: CACHE_DRIVER
+        value: "redis"
+      - key: LOG_CHANNEL
+        value: "stderr"
+      - key: REDIS_HOST
+        value: "${laravel-valkey.HOSTNAME}"
+      - key: REDIS_PASSWORD
+        value: "${laravel-valkey.PASSWORD}"
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: REDIS_PORT
+        value: "${laravel-valkey.PORT}"
+      - key: REDIS_USERNAME
+        value: "${laravel-valkey.USERNAME}"
+      - key: REDIS_SCHEME
+        value: "tls"
 
-  databases:
-    - engine: PG
-      name: laravel-db
-      production: true
-      cluster_name: laravel-db
-      version: "16"
-    - engine: VALKEY
-      name: laravel-valkey
-      production: true
-      cluster_name: laravel-valkey
-      version: "8"
+databases:
+  - engine: PG
+    name: laravel-db
+    production: true
+    cluster_name: laravel-db
+    version: "16"
+  - engine: VALKEY
+    name: laravel-valkey
+    production: true
+    cluster_name: laravel-valkey
+    version: "8"
