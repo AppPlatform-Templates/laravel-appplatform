@@ -13,8 +13,13 @@ services:
       deploy_on_push: true
     dockerfile_path: docker/web/Dockerfile
     http_port: 80
-    instance_count: 1
     instance_size_slug: apps-d-1vcpu-0.5gb
+    autoscaling:
+      min_instance_count: 1
+      max_instance_count: 3
+      metrics:
+        cpu:
+          percent: 70
     health_check:
       http_path: /health
       initial_delay_seconds: 60
@@ -75,8 +80,13 @@ workers:
       branch: main
       deploy_on_push: true
     dockerfile_path: docker/queue-worker/Dockerfile
-    instance_count: 1
     instance_size_slug: apps-d-1vcpu-0.5gb
+    autoscaling:
+      min_instance_count: 1
+      max_instance_count: 3
+      metrics:
+        cpu:
+          percent: 75
     envs:
       - key: APP_ENV
         value: "production"
