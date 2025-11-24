@@ -43,8 +43,8 @@ Add your Laravel application files to your forked repository:
    ```
 
 2. Set the `APP_KEY` in App Platform:
-   - Go to your app → App-Level Environment Variables
-   - Add `APP_KEY` with the value from step 1
+   - Go to your app
+   - Add `APP_KEY` with the value from step 1, in the environment variables of each component, for which APP_KEY is required.
 
 ### 5. Set Up Databases (If Using Databases)
 
