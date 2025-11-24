@@ -13,7 +13,6 @@ Deploy your Laravel application to DigitalOcean App Platform in minutes with pro
 │                                                              │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐   │
 │  │  Web Service    │  │  Queue Worker   │  │  Scheduler  │   │
-│  │  (Nginx + PHP)  │  │  (Background)   │  │  (Worker)   │   │
 │  │                 │  │                 │  │             │   │
 │  │  Auto-scaling:  │  │  Auto-scaling:  │  │  Fixed: 1   │   │
 │  │  min-max        │  │  min-max        │  │  instance   │   │
