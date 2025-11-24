@@ -32,11 +32,21 @@ Click the **Deploy to DigitalOcean** button at the top of your forked repository
 2. Click **Create App**
 3. Connect your forked repository
 4. App Platform will detect the `.do/deploy.template.yaml` configuration
-5. Click **Next** through the setup and **Create Resources**
+5. Click **Next** through the setup
 
-### 4. Set Up Databases (If Using Databases)
+### 4. Configure Your App
+1. Generate an application key:
+   ```bash
+   php artisan key:generate --show
+   ```
 
-This template includes PostgreSQL and Redis databases by default. If you want to use databases, you must attach them after creating the app. If you don't need databases, remove the `databases` section from `.do/deploy.template.yaml` before deploying.
+2. Set the `APP_KEY` in App Platform:
+   - Go to your app → App-Level Environment Variables
+   - Add `APP_KEY` with the value from step 1
+
+### 5. Set Up Databases (If Using Databases)
+
+This template includes PostgreSQL and Redis databases by default. If you want to use databases, you must attach them after clicking on "Create App". If you don't need databases, remove the `databases` section from `.do/deploy.template.yaml` before deploying.
 
 **If you're using databases**, choose one of these options:
 
@@ -44,33 +54,18 @@ This template includes PostgreSQL and Redis databases by default. If you want to
 1. Create databases before or during app creation:
    - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
    - Redis database cluster (recommended: Basic plan, 1GB RAM)
-2. After clicking **Create Resources**, go to your app → Settings → Database
+2. After clicking **Create App**, go to your app → Overview
 3. Attach both databases to your app
 4. The app will automatically redeploy
 
 #### Option 2: Create Databases After App Creation
-1. Click **Create Resources** (app will fail to deploy without databases)
+1. Click **Create App** (app will fail to deploy without databases)
 2. Create database clusters:
    - PostgreSQL database cluster (recommended: Basic plan, 1GB RAM)
-   - Redis database cluster (recommended: Basic plan, 1GB RAM)
-3. Go to your app → Settings → Database
+   - Redis/Valkey database cluster (recommended: Basic plan, 1GB RAM)
+3. Go to your app → Overview
 4. Attach both databases to your app
 5. The app will automatically redeploy
-
-### 5. Configure Your App
-
-After deployment:
-
-1. Generate an application key:
-   ```bash
-   php artisan key:generate --show
-   ```
-
-2. Set the `APP_KEY` in App Platform:
-   - Go to your app → Settings → App-Level Environment Variables
-   - Add `APP_KEY` with the value from step 1
-
-3. Your app will automatically redeploy with the new key
 
 That's it! Your Laravel app is now live on DigitalOcean.
 
@@ -209,7 +204,3 @@ Key variables you need to set:
 - Template Issues: [GitHub Issues](https://github.com/AppPlatform-Templates/laravel-appplatform/issues)
 - App Platform Docs: [DigitalOcean Documentation](https://docs.digitalocean.com/products/app-platform/)
 - Laravel Help: [Laravel Community](https://laravel.com/community)
-
-## License
-
-MIT License. See [LICENSE](LICENSE) file.
