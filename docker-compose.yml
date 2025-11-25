@@ -25,6 +25,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=null
+      - REDIS_SCHEME=tcp
       - CACHE_DRIVER=redis
       - SESSION_DRIVER=redis
       - QUEUE_CONNECTION=redis
@@ -56,6 +57,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=null
+      - REDIS_SCHEME=tcp
       - QUEUE_CONNECTION=redis
       - LOG_CHANNEL=stderr
     depends_on:
@@ -82,6 +84,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=null
+      - REDIS_SCHEME=tcp
       - LOG_CHANNEL=stderr
     depends_on:
       db:
