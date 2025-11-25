@@ -51,7 +51,7 @@ spec:
         - key: SESSION_DRIVER
           value: "redis"
         - key: QUEUE_CONNECTION
-          value: "sync"
+          value: "redis"
         - key: LOG_CHANNEL
           value: "stderr"
         - key: FILESYSTEM_DISK

@@ -11,43 +11,43 @@ This folder contains alternative App Platform configurations for different use c
 **Use for**: Production workloads, high-traffic applications, multi-tenant SaaS
 
 **Architecture**:
-- ✅ Web service (auto-scaling 2-10 instances)
-- ✅ Queue worker (auto-scaling 1-5 instances)
+- ✅ Web service (auto-scaling 1-3 instances)
+- ✅ Queue worker (auto-scaling 1-3 instances)
 - ✅ Scheduler worker (1 instance)
 - ✅ Managed PostgreSQL (production)
-- ✅ Managed Redis (for cache, sessions, queue)
+- ✅ Managed Redis/Valkey (for cache, sessions, queue)
 
 **Features**:
 - Auto-scaling based on CPU usage
 - High availability (multiple instances)
 - Background job processing
 - Task scheduling every minute
-- Redis for performance
+- Redis/Valkey for performance
 - Production-ready instance sizes
 
-**Estimated Monthly Cost**: **$157-445**
+**Estimated Monthly Cost**: **$66-114**
 
 | Component | Configuration | Cost Range |
 |-----------|--------------|------------|
-| Web service | 2-10 × professional-xs | $48-240 |
-| Queue worker | 1-5 × professional-xs | $24-120 |
-| Scheduler | 1 × basic-xxs | $5 |
-| PostgreSQL | Managed, production | $60 |
-| Redis | Managed, production | $15 |
-| **Total** | | **$152-440/month** |
+| Web service | 1-3 × apps-d-1vcpu-0.5gb | $12-36 |
+| Queue worker | 1-3 × apps-d-1vcpu-0.5gb | $12-36 |
+| Scheduler | 1 × apps-d-1vcpu-0.5gb | $12 |
+| PostgreSQL | Managed, production | $15 |
+| Redis/Valkey | Managed, production | $15 |
+| **Total** | | **$66-114/month** |
 
 **When to use**:
 - Production applications
 - >1000 requests/minute expected
 - Need for high availability
 - Background job processing required
-- Budget: $150+/month
+- Budget: $66+/month
 
 ---
 
 ### 2. Starter Mode
 
-**File**: `deploy.template.starter.yaml`
+**File**: `examples/starter.app.yaml`
 
 **Use for**: Development, testing, small applications, learning
 
@@ -66,22 +66,22 @@ This folder contains alternative App Platform configurations for different use c
 - Optional scheduler support
 - Cost-optimized
 
-**Estimated Monthly Cost**: **$17-22**
+**Estimated Monthly Cost**: **$19-31**
 
 | Component | Configuration | Cost |
 |-----------|--------------|------|
-| Web service | 1 × basic-xs | $10 |
-| Scheduler (optional) | 1 × basic-xxs | $5 |
+| Web service | 1 × apps-d-1vcpu-0.5gb | $12 |
+| Scheduler (optional) | 1 × apps-d-1vcpu-0.5gb | $12 |
 | Dev Database (PostgreSQL) | 1GB storage | $7 |
-| **Total (with scheduler)** | | **$22/month** |
-| **Total (without scheduler)** | | **$17/month** |
+| **Total (with scheduler)** | | **$31/month** |
+| **Total (without scheduler)** | | **$19/month** |
 
 **When to use**:
 - Development and testing
 - Learning Laravel + App Platform
 - Small personal projects
 - <100 requests/minute
-- Budget: <$25/month
+- Budget: <$31/month
 
 **Limitations**:
 - Single instance (no redundancy)
@@ -104,7 +104,7 @@ This folder contains alternative App Platform configurations for different use c
 
 ```bash
 # Deploy Starter Mode
-doctl apps create --spec .do/examples/deploy.template.starter.yaml
+doctl apps create --spec .do/examples/starter.app.yaml
 
 # Get app ID
 APP_ID=$(doctl apps list --format ID --no-header | head -1)
@@ -127,18 +127,18 @@ See the main [README.md](../../README.md) for production deployment instructions
 
 | Feature | Starter Mode | Production Mode |
 |---------|-------------|-----------------|
-| **Web Service** | 1 instance | 2-10 instances (auto-scale) |
-| **Queue Worker** | None (sync) | 1-5 instances (auto-scale) |
+| **Web Service** | 1 instance | 1-3 instances (auto-scale) |
+| **Queue Worker** | None (sync) | 1-3 instances (auto-scale) |
 | **Scheduler** | Optional | Included |
 | **Database** | Dev (1GB) | Managed (scalable) |
-| **Redis** | None | Managed |
-| **Cache Driver** | Database | Redis |
-| **Session Driver** | Database | Redis |
-| **Queue Driver** | Sync | Redis |
-| **Instance Size** | basic-xs | professional-xs |
+| **Redis/Valkey** | None | Managed |
+| **Cache Driver** | Database | Redis/Valkey |
+| **Session Driver** | Database | Redis/Valkey |
+| **Queue Driver** | Sync | Redis/Valkey |
+| **Instance Size** | apps-d-1vcpu-0.5gb | apps-d-1vcpu-0.5gb |
 | **High Availability** | No | Yes (multiple instances) |
 | **Auto-scaling** | No | Yes |
-| **Cost/month** | $17-22 | $152-440 |
+| **Cost/month** | $19-31 | $66-114 |
 
 ---
 
@@ -148,7 +148,7 @@ When your app outgrows Starter mode:
 
 ### 1. Update App Spec
 
-Replace `.do/examples/deploy.template.starter.yaml` with `../.do/deploy.template.yaml`
+Replace `.do/examples/starter.app.yaml` with `../.do/app.yaml`(For doctl apps create mode) or with `../.do/deploy.template.yaml`(For Deploy To DigitalOcean mode)
 
 ### 2. Migrate Database
 
@@ -163,11 +163,11 @@ doctl databases create my-app-db --engine pg --region nyc3 --size db-s-2vcpu-4gb
 psql $PROD_DB_CONNECTION < backup.sql
 ```
 
-### 3. Add Redis
+### 3. Add Redis/Valkey
 
 ```bash
-# Create managed Redis
-doctl databases create my-app-redis --engine redis --region nyc3
+# Create managed Valkey (or Redis)
+doctl databases create my-app-valkey --engine valkey --region nyc3
 ```
 
 ### 4. Update Environment Variables
@@ -176,7 +176,7 @@ Update app configuration:
 - `CACHE_DRIVER=redis`
 - `SESSION_DRIVER=redis`
 - `QUEUE_CONNECTION=redis`
-- Add Redis connection details
+- Add Redis/Valkey connection details
 
 ### 5. Redeploy
 
@@ -190,16 +190,16 @@ doctl apps update $APP_ID --spec ../.do/deploy.template.yaml
 
 ### Remove Scheduler from Starter Mode
 
-Edit `deploy.template.starter.yaml` and remove the `workers:` section:
+Edit `starter.app.yaml` and remove the `workers:` section:
 
 ```yaml
-# Remove this entire section to save $5/month
+# Remove this entire section to save $12/month
 workers:
   - name: scheduler
     # ...
 ```
 
-**New cost**: $17/month
+**New cost**: $19/month
 
 ### Add Spaces to Starter Mode
 
@@ -221,15 +221,13 @@ For file uploads, add environment variables:
 
 ### Reduce Production Cost
 
-1. **Lower minimum instances**: Change `min_instance_count: 2` to `1`
-2. **Use smaller instances**: Change `professional-xs` to `basic-xs`
-3. **Remove scheduler**: If you don't need scheduled tasks
+1. **Lower minimum instances**: Already optimized at `min_instance_count: 1`
+2. **Remove scheduler**: Save $12/month if you don't need scheduled tasks
+3. **Use dev database**: Switch to dev PostgreSQL to save costs (not recommended for production)
 
 ---
 
 ## Need Help?
 
 - **Template Issues**: [GitHub Issues](https://github.com/AppPlatform-Templates/laravel-appplatform/issues)
-- **Getting Started**: See [GETTING_STARTED.md](../../GETTING_STARTED.md)
-- **Full Documentation**: See [DEPLOYMENT_GUIDE.md](../../DEPLOYMENT_GUIDE.md)
 - **App Platform Docs**: https://docs.digitalocean.com/products/app-platform/
