@@ -129,12 +129,16 @@ All components are production-optimized with caching, health checks, and auto-sc
 Test your setup locally with Docker:
 
 ```bash
+# Start containers
 docker compose up -d
+
+# Run migrations
 docker compose exec web php artisan migrate
-docker compose exec web php artisan key:generate
 ```
 
 Visit `http://localhost:8080`
+
+**Note**: The local environment uses environment variables from `docker-compose.yml` instead of a `.env` file. All necessary configuration is pre-set for local development.
 
 ## Deployment Modes
 

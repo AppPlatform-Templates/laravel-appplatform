@@ -1,8 +1,6 @@
 # Docker Compose for local Laravel development
 # This mimics the App Platform architecture for local testing
 
-version: '3.8'
-
 services:
   web:
     build:
