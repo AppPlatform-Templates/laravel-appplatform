@@ -2,7 +2,6 @@
 # Lower-cost configuration for development, testing, and small applications
 
 name: laravel-starter-app
-region: nyc3
 
 services:
   - name: web

@@ -1,6 +1,5 @@
 spec:
   name: laravel-app
-  region: nyc3
 
   services:
     - name: web

@@ -3,7 +3,6 @@
 # For Deploy-to-DO button, use .do/deploy.template.yaml instead
 
 name: laravel-app
-region: nyc3
 
 services:
   - name: web
