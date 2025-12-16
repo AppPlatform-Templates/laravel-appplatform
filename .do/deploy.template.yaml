@@ -24,6 +24,9 @@ spec:
         success_threshold: 1
         failure_threshold: 3
       envs:
+        - key: APP_KEY
+          value: <REQUIRED>
+          type: SECRET
         - key: APP_NAME
           value: "Laravel on App Platform"
         - key: APP_ENV
@@ -83,6 +86,9 @@ spec:
           cpu:
             percent: 75
       envs:
+        - key: APP_KEY
+          value: <REQUIRED>
+          type: SECRET
         - key: APP_ENV
           value: "production"
         - key: DB_CONNECTION
@@ -126,6 +132,9 @@ spec:
       instance_count: 1
       instance_size_slug: apps-d-1vcpu-0.5gb
       envs:
+        - key: APP_KEY
+          value: <REQUIRED>
+          type: SECRET
         - key: APP_ENV
           value: "production"
         - key: DB_CONNECTION

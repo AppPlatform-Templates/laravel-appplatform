@@ -1,6 +1,5 @@
 # Starter Mode - Laravel on App Platform
 # Lower-cost configuration for development, testing, and small applications
-# Estimated cost: ~$22/month
 
 name: laravel-starter-app
 region: nyc3
@@ -23,6 +22,9 @@ services:
       success_threshold: 1
       failure_threshold: 3
     envs:
+      - key: APP_KEY
+        value: <REQUIRED>
+        type: SECRET
       - key: APP_NAME
         value: "Laravel Starter App"
       - key: APP_ENV
@@ -59,7 +61,7 @@ services:
         value: "local"
 
 workers:
-  # Optional: Include scheduler worker ($5/month)
+  # Optional: Include scheduler worker
   # Remove this section if you don't need scheduled tasks
   - name: scheduler
     github:
@@ -70,6 +72,9 @@ workers:
     instance_count: 1
     instance_size_slug: basic-xxs
     envs:
+      - key: APP_KEY
+        value: <REQUIRED>
+        type: SECRET
       - key: APP_ENV
         value: "production"
       - key: DB_CONNECTION

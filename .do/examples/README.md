@@ -1,6 +1,6 @@
 # Laravel App Platform Configurations
 
-This folder contains alternative App Platform configurations for different use cases and budgets.
+This folder contains alternative App Platform configurations for different use cases.
 
 ## Available Configurations
 
@@ -25,23 +25,11 @@ This folder contains alternative App Platform configurations for different use c
 - Redis/Valkey for performance
 - Production-ready instance sizes
 
-**Estimated Monthly Cost**: **$66-114**
-
-| Component | Configuration | Cost Range |
-|-----------|--------------|------------|
-| Web service | 1-3 × apps-d-1vcpu-0.5gb | $12-36 |
-| Queue worker | 1-3 × apps-d-1vcpu-0.5gb | $12-36 |
-| Scheduler | 1 × apps-d-1vcpu-0.5gb | $12 |
-| PostgreSQL | Managed, production | $15 |
-| Redis/Valkey | Managed, production | $15 |
-| **Total** | | **$66-114/month** |
-
 **When to use**:
 - Production applications
-- >1000 requests/minute expected
+- High-traffic applications
 - Need for high availability
 - Background job processing required
-- Budget: $66+/month
 
 ---
 
@@ -64,24 +52,12 @@ This folder contains alternative App Platform configurations for different use c
 - Database-backed cache and sessions
 - Synchronous job processing
 - Optional scheduler support
-- Cost-optimized
-
-**Estimated Monthly Cost**: **$19-31**
-
-| Component | Configuration | Cost |
-|-----------|--------------|------|
-| Web service | 1 × apps-d-1vcpu-0.5gb | $12 |
-| Scheduler (optional) | 1 × apps-d-1vcpu-0.5gb | $12 |
-| Dev Database (PostgreSQL) | 1GB storage | $7 |
-| **Total (with scheduler)** | | **$31/month** |
-| **Total (without scheduler)** | | **$19/month** |
 
 **When to use**:
 - Development and testing
 - Learning Laravel + App Platform
 - Small personal projects
-- <100 requests/minute
-- Budget: <$31/month
+- Low-traffic applications
 
 **Limitations**:
 - Single instance (no redundancy)
@@ -138,7 +114,6 @@ See the main [README.md](../../README.md) for production deployment instructions
 | **Instance Size** | apps-d-1vcpu-0.5gb | apps-d-1vcpu-0.5gb |
 | **High Availability** | No | Yes (multiple instances) |
 | **Auto-scaling** | No | Yes |
-| **Cost/month** | $19-31 | $66-114 |
 
 ---
 
@@ -190,16 +165,14 @@ doctl apps update $APP_ID --spec ../.do/deploy.template.yaml
 
 ### Remove Scheduler from Starter Mode
 
-Edit `starter.app.yaml` and remove the `workers:` section:
+Edit `starter.app.yaml` and remove the `workers:` section if you don't need scheduled tasks:
 
 ```yaml
-# Remove this entire section to save $12/month
+# Remove this entire section if not needed
 workers:
   - name: scheduler
     # ...
 ```
-
-**New cost**: $19/month
 
 ### Add Spaces to Starter Mode
 
@@ -217,13 +190,11 @@ For file uploads, add environment variables:
 # etc.
 ```
 
-**Additional cost**: $5/month for Spaces
-
-### Reduce Production Cost
+### Optimize Production Configuration
 
 1. **Lower minimum instances**: Already optimized at `min_instance_count: 1`
-2. **Remove scheduler**: Save $12/month if you don't need scheduled tasks
-3. **Use dev database**: Switch to dev PostgreSQL to save costs (not recommended for production)
+2. **Remove scheduler**: Remove if you don't need scheduled tasks
+3. **Use dev database**: Only for development/testing environments
 
 ---
 
