@@ -103,18 +103,25 @@ Then set it when prompted:
 
 ### 5. Database Setup (Optional)
 
-This template includes PostgreSQL and Redis databases by default. After clicking **Create App**:
+This template includes PostgreSQL and Redis databases by default.
 
-**Option 1: Attach Existing Databases**
+**Option 1: Create Databases First (Recommended)**
+
+Create databases before deploying:
+
+```bash
+# Create PostgreSQL database
+doctl databases create laravel-db --engine pg --version 16 --region nyc3 --size db-s-1vcpu-1gb
+
+# Create Redis/Valkey database
+doctl databases create laravel-valkey --engine redis --version 7 --region nyc3 --size db-s-1vcpu-1gb
+```
+
+Then deploy your app and attach the databases in the App Platform UI.
+
+**Option 2: Attach Existing Databases**
 1. Go to your app → Overview
 2. Attach your PostgreSQL and Redis/Valkey databases
-3. The app will automatically redeploy
-
-**Option 2: Create New Databases**
-1. Create database clusters:
-   - PostgreSQL: `doctl databases create laravel-db --engine pg --version 16 --region nyc3 --size db-s-1vcpu-1gb`
-   - Redis/Valkey: `doctl databases create laravel-valkey --engine valkey --version 8 --region nyc3 --size db-s-1vcpu-1gb`
-2. Attach both databases to your app
 3. The app will automatically redeploy
 
 **If you don't need databases**, remove the `databases` section from `.do/deploy.template.yaml` before deploying.
