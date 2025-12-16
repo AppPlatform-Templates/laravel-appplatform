@@ -101,7 +101,7 @@ Then set it when prompted:
 - **Use the same generated key for all components**
 - The value will be automatically marked as a secret
 
-### 5. Database Setup (Optional)
+### 5. Database Setup
 
 This template includes PostgreSQL and Redis databases by default.
 
